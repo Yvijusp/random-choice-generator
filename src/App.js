@@ -1,3 +1,4 @@
+import { Button, Container, Text } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Textarea } from './components/Textarea';
 
@@ -16,8 +17,10 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h1>Random choice generator</h1>
+    <Container maxW='container.lg'>
+      <Text as='h1' fontSize='5xl' marginBottom='4'>
+        Random choice generator
+      </Text>
       <Textarea
         value={data}
         onChange={(e) => {
@@ -26,10 +29,16 @@ const App = () => {
           e.target.style.height = `${e.target.scrollHeight}px`;
         }}
       />
-      <button onClick={handleClick}>Randomize</button>
+      <Button onClick={handleClick} colorScheme='blue'>
+        Randomize
+      </Button>
 
-      {random && <h3>{random}</h3>}
-    </div>
+      {random && (
+        <Text as='h3' fontSize='3xl' marginTop='4'>
+          {random}
+        </Text>
+      )}
+    </Container>
   );
 };
 

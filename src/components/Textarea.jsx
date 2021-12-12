@@ -1,10 +1,16 @@
-import styled from 'styled-components';
-
-const Area = styled.textarea`
-  width: 80%;
-  display: block;
-`;
+import { Textarea as TextField } from '@chakra-ui/react';
 
 export const Textarea = ({ onChange, value }) => {
-  return <Area name='random' id='random' onChange={onChange} value={value} />;
+  return (
+    <TextField
+      name='random'
+      id='random'
+      onChange={onChange}
+      value={value}
+      size='sm'
+      marginBottom='4'
+      fontSize='large'
+      resize='none'
+    />
+  );
 };
