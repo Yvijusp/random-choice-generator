@@ -1,6 +1,7 @@
 import { Textarea as TextField } from '@chakra-ui/react';
+import { forwardRef } from 'react';
 
-export const Textarea = ({ onChange, value }) => {
+export const Textarea = forwardRef(({ onChange, value }, ref) => {
   return (
     <TextField
       name='random'
@@ -11,6 +12,7 @@ export const Textarea = ({ onChange, value }) => {
       marginBottom='4'
       fontSize='large'
       resize='none'
+      ref={ref}
     />
   );
-};
+});

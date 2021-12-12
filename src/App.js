@@ -1,12 +1,17 @@
 import { Button, Container, Text } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Textarea } from './components/Textarea';
 
 const App = () => {
   const [data, setData] = useState('');
   const [random, setRandom] = useState('');
+  const [isSaved, setIsSaved] = useState(
+    localStorage.getItem('input_data') ? true : false
+  );
 
-  const handleClick = () => {
+  const textareaRef = useRef();
+
+  const handleRandomizeClick = () => {
     if (!data) return;
 
     const choices = data.split(/\r?\n/);
@@ -15,6 +20,30 @@ const App = () => {
 
     setRandom(randomItem);
   };
+
+  const handleSaveForLater = () => {
+    if (!data) return;
+
+    if (isSaved) {
+      localStorage.removeItem('input_data');
+      setIsSaved(false);
+      return;
+    }
+
+    localStorage.setItem('input_data', JSON.stringify(data));
+    setIsSaved(true);
+  };
+
+  useEffect(() => {
+    let savedData = localStorage.getItem('input_data');
+
+    if (savedData) {
+      setData(JSON.parse(savedData));
+      if (textareaRef.current) {
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      }
+    }
+  });
 
   return (
     <Container maxW='container.lg'>
@@ -28,10 +57,19 @@ const App = () => {
           e.target.style.height = 'inherit';
           e.target.style.height = `${e.target.scrollHeight}px`;
         }}
+        ref={textareaRef}
       />
-      <Button onClick={handleClick} colorScheme='blue'>
+      <Button onClick={handleRandomizeClick} colorScheme='blue' marginRight='3'>
         Randomize
       </Button>
+
+      {isSaved ? (
+        <Button onClick={handleSaveForLater}>Remove saved</Button>
+      ) : (
+        <Button onClick={handleSaveForLater} colorScheme='blackAlpha'>
+          Save for later
+        </Button>
+      )}
 
       {random && (
         <Text as='h3' fontSize='3xl' marginTop='4'>
