@@ -141,7 +141,11 @@ const App = () => {
         {isSaved ? (
           <Button onClick={handleSaveForLater}>Remove saved</Button>
         ) : (
-          <Button onClick={handleSaveForLater} colorScheme='blackAlpha'>
+          <Button
+            onClick={handleSaveForLater}
+            colorScheme='blackAlpha'
+            color={useColorModeValue('black', 'ghostWhite')}
+          >
             Save for later
           </Button>
         )}
