@@ -29,13 +29,13 @@ const App = () => {
     if (!data) return;
 
     if (!seperator) {
-      const choices = data.split(/\r?\n/);
+      const choices = data.split(/\r?\n/).filter(Boolean);
       const randomItem = choices[Math.floor(Math.random() * choices.length)];
       setRandom(randomItem);
       return;
     }
 
-    const choices = data.split(seperator);
+    const choices = data.split(seperator).filter(Boolean);
 
     const randomItem = choices[Math.floor(Math.random() * choices.length)];
 
@@ -52,7 +52,10 @@ const App = () => {
       return;
     }
 
-    localStorage.setItem('input_data', JSON.stringify(data));
+    localStorage.setItem(
+      'input_data',
+      JSON.stringify(data.replace(/^\s*$(?:\r\n?|\n)/gm, ''))
+    );
     localStorage.setItem('seperator', JSON.stringify(seperator));
     setIsSaved(true);
   };
@@ -78,9 +81,6 @@ const App = () => {
 
     if (savedData) {
       setData(JSON.parse(savedData));
-      if (textareaRef.current) {
-        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-      }
     }
 
     if (savedSeperator) {
@@ -98,6 +98,17 @@ const App = () => {
           return (selectRef.current.selectedIndex = 3);
         default:
           return null;
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const savedData = localStorage.getItem('input_data');
+
+    if (savedData) {
+      if (textareaRef.current) {
+        textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+        textareaRef.current.focus();
       }
     }
   });
