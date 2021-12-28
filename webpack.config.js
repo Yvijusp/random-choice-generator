@@ -62,6 +62,8 @@ module.exports = ({ development }) => {
       new ReactRefreshWebpackPlugin(),
       new HtmlWebpackPlugin({
         template: './public/index.html',
+        favicon: './public/favicon.ico',
+        inject: 'head',
       }),
     ],
   };
